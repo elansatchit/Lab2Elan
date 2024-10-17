@@ -13,6 +13,18 @@ output:
 knitr::opts_chunk$set(fig.height=3, fig.width=4, warning=FALSE, tidy=TRUE, tidy.opts=list(width.cutoff=60))
 ```
 
+Required Packages:
+```{r}
+install.packages('gridExtra')
+library(gridExtra)
+install.packages('ggplot2')
+library(ggplot2)
+install.packages('knitr')
+library(knitr)
+install.packages('kableExtra')
+library(kableExtra)
+```
+
 ## 1. Introduction
 
 This report analyzes a data set of all the tornadoes that occurred within the United States in 2022. The data was collected by the National Oceanic and Atmospheric Administration's (NOAA) National Weather Service Storm Prediction Center, and was accessed via their [Severe Weather Maps, Graphics, and Data Page](https://www.spc.noaa.gov/wcm/#data).
@@ -32,7 +44,6 @@ tornados <- read.csv('Project1_Tornados.csv')
 ### 2. Outcome Variable: Injuries by US Tornadoes
 
 ```{r echo=FALSE}
-library(ggplot2)
 t_ggplot <- ggplot(tornados)
 
 #Injuries Bar Graph
@@ -40,7 +51,6 @@ t_ggplot + geom_bar(aes(x=injuries, fill=injuries)) + labs(title='Injuries by US
 ```
 
 ```{r echo = FALSE}
-library(knitr)
 
 #Nicely formatted table of Injury proportion
 injury_table <- prop.table(table(tornados$injuries))
@@ -72,7 +82,6 @@ histNo <- ggplot(injuriesNo, aes(x = magnitude)) + geom_histogram(aes(y = ..coun
 histYes <- ggplot(injuriesYes, aes(x = magnitude)) + geom_histogram(aes(y = ..count../sum(..count..)), binwidth = 0.5, color = "black", fill = "blue", alpha = 0.5) + labs(x = 'Magnitude', y = 'Proportion', title = 'Injuries: Yes') + scale_y_continuous(labels = scales::percent_format()) + theme_classic()
 
 # Display the plots side by side
-library(gridExtra)
 grid.arrange(histNo, histYes, ncol = 2)
 
 mean_magnitude <- aggregate(tornados$magnitude ~ tornados$injuries, data = tornados, mean)
